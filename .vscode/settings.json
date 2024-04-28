@@ -1,0 +1,20 @@
+{
+  // default editor configurations
+  "prettier.requireConfig": true,
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  // language specific fomatting
+  "terraform.experimentalFeatures.prefillRequiredFields": true,
+  "[terraform]": {
+    "editor.defaultFormatter": "hashicorp.terraform",
+    "editor.formatOnSaveMode": "file"
+  },
+  "[terraform-vars]": {
+    "editor.defaultFormatter": "hashicorp.terraform",
+    "editor.formatOnSaveMode": "file"
+  },
+  "[hcl]": {
+    "editor.defaultFormatter": "hashicorp.hcl",
+    "editor.formatOnSaveMode": "file"
+  }
+}

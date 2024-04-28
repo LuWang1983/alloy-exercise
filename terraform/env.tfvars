@@ -1,0 +1,10 @@
+project = "alloy_exercise"
+# replace with real values before provisioning
+image_name      = "value"
+my_ip           = "value"
+db_username     = "value"
+db_password     = "value"
+region          = "value"
+registry        = "value"
+repository      = "value"
+public_key_path = "value"
