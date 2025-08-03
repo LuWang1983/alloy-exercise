@@ -1,3 +1,4 @@
+# Note: roles are assumed by machines, in this case, the ec2 instance
 resource "aws_iam_role" "ec2_role_echo_server" {
   name = "ec2_role_echo_server"
 
@@ -21,11 +22,14 @@ EOF
   }
 }
 
+# profile for ec2 to attach the role and policy
 resource "aws_iam_instance_profile" "ec2_profile_echo_server" {
   name = "ec2_profile_echo_server"
   role = aws_iam_role.ec2_role_echo_server.name
 }
 
+# Allow the role to get docker image from the container registry
+# Optionally, assign the role to get read/write to the RDS database
 resource "aws_iam_role_policy" "ec2_policy" {
   name = "ec2_policy"
   role = aws_iam_role.ec2_role_echo_server.id

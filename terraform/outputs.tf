@@ -18,5 +18,5 @@ output "database_address" {
 
 output "database_port" {
   description = "The port of the database"
-  value       = aws_db_instance.rds.port
+  value       = aws_db_instance.rds.port # default port for MySQL is 3306
 }
