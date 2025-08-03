@@ -4,7 +4,8 @@ variable "project" {
 }
 
 variable "region" {
-  type = string
+  type    = string
+  default = "us-east-1"
 }
 
 variable "image_name" {
@@ -35,6 +36,7 @@ variable "private_subnet_cidr_blocks" {
   description = "CIDR blocks for private subnets"
   type        = list(string)
   # for addresses 10.0.0.128 - 10.0.0.255
+  # Notes: 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16 recommended by RFC 1918 for private CIDR blocks, not routable
   default = [
     "10.0.0.252/25",
     "10.0.0.253/25",
@@ -60,22 +62,25 @@ variable "instance_number" {
 }
 
 variable "my_ip" {
-  description = "The IP address allowed to SSH into the EC2 instances"
+  description = "The public IP address allowed to SSH into the EC2 instances from my machine"
   type        = string
-  sensitive   = true
+  default     = "170.85.73.103"
 }
 
 variable "db_username" {
   type      = string
   sensitive = true
+  default   = "admin"
 }
 
 variable "db_password" {
   type      = string
   sensitive = true
+  default   = "password123"
 }
 
 variable "public_key_path" {
   type      = string
   sensitive = true
+  default   = "~/.ssh/id_ed25519.pub"
 }

@@ -11,6 +11,8 @@ DOCKER_CONTEXT=$(cd -- "$( dirname -- "${SCRIPT_DIR}" )"/echo-server &> /dev/nul
 echo "DOCKER_CONTEXT=${DOCKER_CONTEXT}"
 
 # assumptions: docker is installed
+# Improvements: using Packer and Ansible to install all the dependencies in the AMI for the EC2 instance
+# docker runs the application that will make calls to the database in the private subnet
 docker buildx build \
     --platform=linux/amd64 \
     --tag="$IMAGE_NAME:latest" \

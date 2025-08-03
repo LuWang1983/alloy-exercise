@@ -12,6 +12,7 @@ provider "aws" {
   region = var.region
 }
 
+# Use available for this exercise but in real world, often needs to specify a region
 data "aws_availability_zones" "available" {
   state = "available"
 }

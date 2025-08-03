@@ -1,11 +1,15 @@
 # Security group for Application EC2 instances in public subnet
+# TCP (Transmission Control Protocol) - most common for web traffic (http, https, ssh) and database connections
+# UDP (User Datgram Protocol) - connectionless protocol, used for media streamming, online gaming and DNS
+# ICMP (Internet Control Message Protocol) - Ping, error reporting and network diagnosis.
+# -1 or all - all protocols
 resource "aws_security_group" "ec2_sg" {
   name        = "ec2_sg"
   description = "Security group to allow https/http requests from the internet."
   vpc_id      = aws_vpc.echo_server.id
   depends_on  = [aws_vpc.echo_server]
   ingress {
-    description = "Allow all inbound traffic via https"
+    description = "Allow all inbound traffic via http"
     from_port   = 80
     to_port     = 80
     protocol    = "tcp"
@@ -23,6 +27,7 @@ resource "aws_security_group" "ec2_sg" {
     protocol    = "tcp"
     from_port   = 22
     to_port     = 22
+    # Alternatively, third party IDM and Active Directory can be used to create a group of users to access the VM
     cidr_blocks = ["${var.my_ip}/32"]
   }
   egress {

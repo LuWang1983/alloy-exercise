@@ -1,3 +1,6 @@
+# For simplicity, an existing AMI is used.
+# In real world, most of the time, an customized AMI needs to be created and provisioned, Packer and Ansible can be used to provision and install dependencies and store it in an artifact registry.
+# e.g. docker, mysql-client or security apps can be installed using Ansible as dependencies.
 data "aws_ami" "amazon_linux_2" {
   most_recent = true
   owners      = ["amazon"]
@@ -7,10 +10,12 @@ data "aws_ami" "amazon_linux_2" {
   }
 }
 # Alternatively, we can use aws autoscaling group and launch_template to provision the EC2 instance
+# Notes: To provision multiple instances with the same configurations, we can benefit from launch_template; alternatively, we can make this into a module and reuse the module
+# by providing different variables as needed. If only 1 instance is required, using resource is enough.
 resource "aws_instance" "alloy_exercise" {
   count         = var.instance_number
   ami           = data.aws_ami.amazon_linux_2.id
-  instance_type = "t3.micro"
+  instance_type = "t3.micro" # Free tier but uses CPU credits
   subnet_id     = aws_subnet.public[count.index].id
   key_name      = aws_key_pair.ssh.key_name
 
@@ -19,9 +24,11 @@ resource "aws_instance" "alloy_exercise" {
   }
 
   root_block_device {
-    volume_size = 8
+    # Improvement for security: KMS encryption
+    volume_size           = 8
+    delete_on_termination = true
   }
-
+  # Alternatively, use an external file for more complex startup script and cloudinit.
   user_data = <<-EOF
     #!/bin/bash
     set -ex
@@ -29,7 +36,7 @@ resource "aws_instance" "alloy_exercise" {
     sudo amazon-linux-extras install docker -y
     sudo service docker start
     sudo usermod -a -G docker ec2-user
-    
+
     # pull echo-server docker image
     aws ecr get-login-password --region ${var.region} | docker login --username AWS --password-stdin ${var.registry}
     docker pull ${var.image_name}
